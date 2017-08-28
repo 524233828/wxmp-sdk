@@ -46,7 +46,7 @@ class WechatBase
             throw new \Exception("require Redis Object, please use bindRedis");
         }
 
-        $key = "wxmp:{$this->app_id}:access_token";
+        $key = "wxmp:base:{$this->app_id}:access_token";
         if($access_token = $this->redis->get($key))
         {
             if($this->testAccessToken($access_token)){
