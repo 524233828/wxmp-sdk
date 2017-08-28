@@ -43,7 +43,7 @@ class WechatBase
     {
         if(!($this->redis instanceof \Redis))
         {
-            throw new \Exception("require Redis Object,please use bindRedis");
+            throw new \Exception("require Redis Object, please use bindRedis");
         }
 
         $key = "wxmp:{$this->app_id}:access_token";
@@ -65,9 +65,16 @@ class WechatBase
 
         $result = $this->network->get($uri,$data)->toArray();
 
-        $this->redis->set($key,$result['access_token'],$result['expire_in']);
+        if(isset($result['access_token'])&&isset($result['expire_in']))
+        {
+            $this->redis->set($key,$result['access_token'],$result['expire_in']);
 
-        return $result['access_token'];
+            return $result['access_token'];
+        }else{
+
+            throw new \Exception($result['errmsg'],$result['errcode']);
+        }
+
     }
 
     public function bindRedis(\Redis $redis)
@@ -78,7 +85,36 @@ class WechatBase
 
     public function testAccessToken($access_token)
     {
-        return true;
+
+        $uri = clone $this->uri;
+        $uri->withPath("/cgi-bin/getcallbackip");
+
+        $data = [
+            "access_token"=>$access_token,
+        ];
+
+        $result = $this->network->get($uri,$data)->toArray();
+
+        return isset($result['ip_list']);
+    }
+
+    public function getIpList()
+    {
+        $uri = clone $this->uri;
+        $uri->withPath("/cgi-bin/getcallbackip");
+
+        $data = [
+            "access_token"=>$this->getAccessToken(),
+        ];
+
+        $result = $this->network->get($uri,$data)->toArray();
+
+        if(isset($result['ip_list'])){
+            return $result['ip_list'];
+        }else{
+
+            throw new \Exception($result['errmsg'],$result['errcode']);
+        }
     }
 
 }
