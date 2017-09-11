@@ -21,7 +21,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Wxmp\\": "src/"
+            "Wxmp\\": "src/",
+            "Wxmp\\Sdk\\":"src/Sdk"
         }
     }
 }
