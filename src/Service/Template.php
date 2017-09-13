@@ -8,9 +8,9 @@
  * 模板消息模板类
  */
 
-namespace \Wxmp\Service;
+namespace Wxmp\Service;
 
 class Template
 {
-
+    
 }

@@ -47,7 +47,12 @@ class WechatTemplate
 
         $result = $this->network->put($uri, $data)->toArray();
 
-        return $result;
+        if(isset($result['msgid']))
+        {
+            return $result;
+        }else{
+            throw new \Exception($result['errmsg'],$result['errcode']);
+        }
     }
 
 }
