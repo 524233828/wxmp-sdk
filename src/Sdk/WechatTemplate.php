@@ -23,7 +23,7 @@ class WechatTemplate
      */
     private $uri;
 
-    public function __construct($app_id, $app_secret, $uri = "")
+    public function __construct($uri = "")
     {
         $this->network = new \Network\Http();
 
