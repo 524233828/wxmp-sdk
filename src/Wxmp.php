@@ -16,10 +16,10 @@ use Wxmp\Sdk\WechatWeb;
 
 class Wxmp{
 
-    private $wchat_base;
-    private $wechat_user;
-    private $wechat_web;
-    private $wechat_template;
+    public $wchat_base;
+    public $wechat_user;
+    public $wechat_web;
+    public $wechat_template;
 
     public function __construct($app_id,$app_secrete,$uri="")
     {
