@@ -10,6 +10,12 @@ namespace Wxmp\Sdk;
 
 use Wxmp\ApiDomain;
 
+/**
+ * 微信基础服务类
+ * 需要\Redis支持
+ * Class WechatBase
+ * @package Wxmp\Sdk
+ */
 class WechatBase
 {
     private $app_id;
@@ -39,6 +45,11 @@ class WechatBase
         $this->app_secret = $app_secret;
     }
 
+    /**
+     * 获取微信基础access_token，并记录到redis中
+     * @return bool|string
+     * @throws \Exception
+     */
     public function getAccessToken()
     {
         if(!($this->redis instanceof \Redis))
@@ -77,12 +88,22 @@ class WechatBase
 
     }
 
+    /**
+     * 绑定redis对象
+     * @param \Redis $redis
+     * @return $this
+     */
     public function bindRedis(\Redis $redis)
     {
         $this->redis = $redis;
         return $this;
     }
 
+    /**
+     * 测试access_token是否可用
+     * @param $access_token
+     * @return bool
+     */
     public function testAccessToken($access_token)
     {
 
@@ -98,6 +119,11 @@ class WechatBase
         return isset($result['ip_list']);
     }
 
+    /**
+     * 获取微信IP地址
+     * @return mixed
+     * @throws \Exception
+     */
     public function getIpList()
     {
         $uri = clone $this->uri;

@@ -1,21 +1,18 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: JoseChan
- * Date: 2017/9/12 0012
- * Time: 下午 8:10
+ * User: chenyu
+ * Date: 2017/9/15
+ * Time: 10:16
  */
-
 
 namespace Wxmp\Sdk;
 
 use Wxmp\ApiDomain;
 use Wxmp\Service\JsonHttp;
-use Wxmp\Service\Template;
 
-class WechatTemplate
+class WechatMessage
 {
-
     /**
      * @var \Network\Http
      */
@@ -34,27 +31,17 @@ class WechatTemplate
         $this->uri = new \Uri("https://" . $uri);
     }
 
-    public function send($access_token,$open_id,Template $template,$url = "",$miniprogram = [])
+    public function customSend($access_token, $open_id, $type = "text", $data = [])
     {
         $uri = clone $this->uri;
 
-        $uri->withPath("/cgi-bin/message/template/send?access_token={$access_token}");
+        $uri->withPath("/cgi-bin/message/custom/send?access_token={$access_token}");
 
         $data = [
             "touser" => $open_id,
-            "template_id" => $template->getTemplateId(),
-            "data" => $template->getData()
+            "msgtyp" => $type,
+            $type =>  $data,
         ];
-
-        if(!empty($url))
-        {
-            $data['url'] = $url;
-        }
-
-        if(!empty($miniprogram))
-        {
-            $data['miniprogram'] = $miniprogram;
-        }
 
         $json_http = new JsonHttp();
 
@@ -67,5 +54,4 @@ class WechatTemplate
             throw new \Exception($result['errmsg'],$result['errcode']);
         }
     }
-
 }
